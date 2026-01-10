@@ -1,4 +1,26 @@
-# Welcome to your organization's demo respository
-This code repository (or "repo") is designed to demonstrate the best GitHub has to offer with the least amount of noise.
+# Project LiveMarketAI
 
-The repo includes an `index.html` file (so it can render a web page), two GitHub Actions workflows, and a CSS stylesheet dependency.
+## Context
+The project operates within environments where stability cannot be presupposed. Emphasis is placed on relations between signal emergence, internal coherence, and regulated response behavior, without commitment to specific formulations or execution pathways.
+
+## Operating Assumptions
+- Contextual parameters are not assumed to remain fixed  
+- Evaluative states are subject to revision  
+- System responses are not constrained to singular modes  
+- Confidence metrics are treated as non-canonical
+
+## Structure
+The project follows conceptual dependency rather than procedural order. Sections may appear incomplete, redundant, or deferred by design.
+
+## Attribution
+This work is developed by Adishree Gupta, Bhumika Lokare, Bhavani S, and Akshat Choudhary, under the academic guidance of Professor Mahitha G.
+
+## Status
+Ongoing.  
+Boundaries, interpretations, and directions remain intentionally undefined.
+
+## Access
+This repository is provided for contextual reference only. It is not intended for implementation, reproduction, or extrapolation.
+
+## Disclosure
+Details regarding methodology, architecture, sequencing, or objectives are intentionally withheld.
