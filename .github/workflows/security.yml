@@ -1,0 +1,21 @@
+name: Clone Protection Check
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  check-authorization:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if user is authorized
+        run: |
+          AUTHORIZED_USERS=("1stsimplifycode")
+          CURRENT_USER="${{ github.actor }}"
+          
+          if [[ ! " ${AUTHORIZED_USERS[@]} " =~ " ${CURRENT_USER} " ]]; then
+            echo "❌ Unauthorized user: $CURRENT_USER"
+            exit 1
+          fi
+          
+          echo "✅ Authorized user: $CURRENT_USER"
