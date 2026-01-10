@@ -1,0 +1,22 @@
+name: Notify Push
+on: push
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "Push to ${{ github.repository }} on branch ${{ github.ref_name }}"
+          body: |
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Pusher: ${{ github.actor }}
+            Commits:
+            ${{ github.event.head_commit.message }}
+          to: mailtoadishreegupta@gmail.com, mahithag@pes.edu
+          from: GitHub Notifications <noreply@github.com>
