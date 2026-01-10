@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send email notification
-        uses: dawidd6/action-send-mail@v3
+        uses: actions-ecosystem/action-send-mail@fc6b6a58c80c43558317eb0fa6634952e76f6e73  # v1.2.0
         with:
           server_address: smtp.gmail.com
           server_port: 465
@@ -19,4 +19,4 @@ jobs:
             Commits:
             ${{ github.event.head_commit.message }}
           to: mailtoadishreegupta@gmail.com, mahithag@pes.edu
-          from: GitHub Notifications <noreply@github.com>
+          from: noreply@github.com
