@@ -19,8 +19,5 @@ This work is developed by Adishree Gupta, Bhumika Lokare, Bhavani S, and Akshat 
 Ongoing.  
 Boundaries, interpretations, and directions remain intentionally undefined.
 
-## Access
-This repository is provided for contextual reference only. It is not intended for implementation, reproduction, or extrapolation.
-
 ## Disclosure
 Details regarding methodology, architecture, sequencing, or objectives are intentionally withheld.
