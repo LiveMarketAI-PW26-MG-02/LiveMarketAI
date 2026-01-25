@@ -1,18 +1,3 @@
-#!/usr/bin/env python3
-"""
-Complete Financial Analysis System - Auto-generates Excel with all 90+ columns
-Automatically runs from January 1st of current year to current date/time
-
-Usage:
-    python script.py
-    
-Or in Jupyter/Colab:
-    %run script.py
-    
-The script will automatically analyze stocks from Jan 1st of current year to now.
-You can also manually call: analyze_stocks(['AAPL', 'MSFT'], '2023-01-01', '2024-01-01')
-"""
-
 import warnings
 warnings.filterwarnings('ignore')
 import numpy as np
