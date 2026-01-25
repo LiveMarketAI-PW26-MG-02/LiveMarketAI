@@ -18,9 +18,21 @@ jobs:
           
       - name: Install Dependencies (if any)
         run: |
-          # Example: npm install
-          # Remove or modify if not using Node
-          npm install
+          # Install only if package.json exists. Support repo root or ./frontend subfolder.
+          if [ -f ./package.json ]; then
+            echo "Found package.json in repo root"
+            npm ci
+          elif [ -f ./frontend/package.json ]; then
+            echo "Found package.json in ./frontend"
+            cd frontend
+            npm ci
+          elif [ -f ./client/package.json ]; then
+            echo "Found package.json in ./client"
+            cd client
+            npm ci
+          else
+            echo "No package.json found — skipping npm install"
+          fi
           
       - name: Build/Run HTML
         run: |
