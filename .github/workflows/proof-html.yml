@@ -18,9 +18,13 @@ jobs:
           
       - name: Install Dependencies (if any)
         run: |
-          # Install only if package.json exists. Support repo root or ./frontend subfolder.
+          # Install only if package.json exists. Support repo root or subfolders.
           if [ -f ./package.json ]; then
             echo "Found package.json in repo root"
+            npm ci
+          elif [ -f ./polygot_architecture/package.json ]; then
+            echo "Found package.json in ./polygot_architecture"
+            cd polygot_architecture
             npm ci
           elif [ -f ./frontend/package.json ]; then
             echo "Found package.json in ./frontend"
