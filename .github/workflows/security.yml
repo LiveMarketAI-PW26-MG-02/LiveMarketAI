@@ -16,8 +16,8 @@ jobs:
           CURRENT_USER="${{ github.actor }}"
           
           if [[ ! " ${AUTHORIZED_USERS[@]} " =~ " ${CURRENT_USER} " ]]; then
-            echo "❌ Unauthorized user: $CURRENT_USER"
+            echo " Unauthorized user: $CURRENT_USER"
             exit 1
           fi
           
-          echo "✅ Authorized user: $CURRENT_USER"
+          echo " Authorized user: $CURRENT_USER"
