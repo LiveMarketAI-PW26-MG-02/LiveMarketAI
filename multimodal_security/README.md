@@ -1,8 +1,8 @@
-# Multimodal Security ZIP System
+# Multimodal Security 
 
 A **4-language** (Python · R · C++ · Java) security pipeline for creating and
 protecting ZIP archives. Every layer adds a distinct cryptographic or analytical
-security control. Data is exchanged exclusively via **XML** (no JSON anywhere).
+security control. Data is exchanged exclusively via **XML** .
 
 ---
 
@@ -131,7 +131,6 @@ java -cp java/ SecureZipManager shared/
 
 | Control                    | Python | R  | C++ | Java |
 |----------------------------|--------|----|-----|------|
-| ZIP compression            | ✓      |    |     | ✓    |
 | Stream cipher (CTR)        | ✓      |    |     |      |
 | Block cipher (Feistel-CBC) |        |    | ✓   |      |
 | AES-256-GCM                |        |    |     | ✓    |
@@ -146,7 +145,6 @@ java -cp java/ SecureZipManager shared/
 | Runs (randomness) test     |        | ✓  |     |      |
 | Magic header validation    | ✓      |    | ✓   | ✓    |
 | XML-only metadata          | ✓      | ✓  | ✓   | ✓    |
-| **JSON used**              | ✗      | ✗  | ✗   | ✗    |
 
 ---
 
