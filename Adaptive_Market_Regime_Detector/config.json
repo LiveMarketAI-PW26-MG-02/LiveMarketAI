@@ -1,0 +1,6 @@
+{
+  "symbols": ["SPY", "QQQ", "IWM", "GLD", "TLT", "EFA"],
+  "refresh_seconds": 60,
+  "n_regimes": 4,
+  "vol_thresholds": {"low": 0.005, "medium": 0.012, "high": 0.025}
+}
