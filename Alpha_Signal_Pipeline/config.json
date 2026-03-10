@@ -1,0 +1,1 @@
+{"symbols":["AAPL","MSFT","NVDA","GOOGL","AMZN","TSLA","SPY"],"alpha_threshold":0.75,"refresh_seconds":120,"backtest_period":"2y","weights":{"news":0.25,"obi":0.20,"volatility":0.20,"momentum":0.20,"rsi":0.15}}
