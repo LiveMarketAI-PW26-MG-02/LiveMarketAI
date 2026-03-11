@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import os
 
 app = Flask(__name__)
 
@@ -51,4 +52,5 @@ def analyze_stock():
 
 if __name__ == '__main__':
     print("Python service starting on port 5001...")
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    debug_mode = os.getenv("FLASK_DEBUG", "").lower() in ("1", "true", "yes")
+    app.run(host='0.0.0.0', port=5001, debug=debug_mode)
