@@ -53,7 +53,7 @@ def register_endpoints(app: Any) -> None:
             })
         except Exception as exc:
             logger.exception("Prediction error")
-            return jsonify({"error": str(exc)}), 500
+            return jsonify({"error": "prediction failed"}), 500
 
     @app.route("/predict/batch", methods=["POST"])
     def predict_batch():
