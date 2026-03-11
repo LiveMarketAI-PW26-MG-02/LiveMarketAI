@@ -78,7 +78,8 @@ def register_endpoints(app: Any) -> None:
                     mean, std = float(feats.mean()), float(feats.std())
                 results.append({"mean": mean, "std": std, "status": "ok"})
             except Exception as exc:
-                results.append({"error": str(exc), "status": "error"})
+                logger.exception("Batch prediction error")
+                results.append({"error": "prediction failed", "status": "error"})
 
         return jsonify({"results": results, "n": len(results)})
 
