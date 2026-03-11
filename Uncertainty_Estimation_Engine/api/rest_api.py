@@ -86,7 +86,7 @@ def create_app(engine=None, config: Dict[str, Any] = None) -> Any:
     return app
 
 
-def run_dev_server(host: str = "0.0.0.0", port: int = 5000, debug: bool = True) -> None:
+def run_dev_server(host: str = "0.0.0.0", port: int = 5000, debug: bool = False) -> None:
     """Convenience function to start the development server."""
     app = create_app()
     logger.info("Starting development server at %s:%d", host, port)
