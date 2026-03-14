@@ -1,0 +1,178 @@
+version: '3.8'
+
+services:
+
+  # ── Databases ──────────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: stock_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: stockpassword
+      MYSQL_DATABASE: stock_platform
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pstockpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: stock_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: stock_elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+
+  # ── Service 1: Stock Catalog ───────────────────────────────
+  service1-catalog:
+    build: ./service1-catalog
+    container_name: stock_catalog
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: stockpassword
+      DB_NAME: stock_platform
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ── Service 2: Price Adjustment Engine ────────────────────
+  service2-price-engine:
+    build: ./service2-price-engine
+    container_name: stock_price_engine
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: stockpassword
+      DB_NAME: stock_platform
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ── Service 3: Price Cache ────────────────────────────────
+  service3-price-cache:
+    build: ./service3-price-cache
+    container_name: stock_price_cache
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    environment:
+      PORT: 3003
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: stockpassword
+      DB_NAME: stock_platform
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── Service 4: Search Index ───────────────────────────────
+  service4-search-index:
+    build: ./service4-search-index
+    container_name: stock_search
+    restart: unless-stopped
+    ports:
+      - "3004:3004"
+    environment:
+      PORT: 3004
+      ES_HOST: http://elasticsearch:9200
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: stockpassword
+      DB_NAME: stock_platform
+    depends_on:
+      mysql:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+
+  # ── Service 5: Stock Listing API ──────────────────────────
+  service5-listing-api:
+    build: ./service5-listing-api
+    container_name: stock_listing
+    restart: unless-stopped
+    ports:
+      - "3005:3005"
+    environment:
+      PORT: 3005
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: stockpassword
+      DB_NAME: stock_platform
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── Service 6: Availability Scheduler ────────────────────
+  service6-availability-scheduler:
+    build: ./service6-availability-scheduler
+    container_name: stock_scheduler
+    restart: unless-stopped
+    ports:
+      - "3006:3006"
+    environment:
+      PORT: 3006
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: stockpassword
+      DB_NAME: stock_platform
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
+  redis_data:
+  es_data:
