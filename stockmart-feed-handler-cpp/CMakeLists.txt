@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.16)
+project(stockmart_feed_handler VERSION 1.0.0 LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+include_directories(include)
+add_executable(feed_handler src/main.cpp src/fix_parser.cpp src/feed_dispatcher.cpp src/subscription_manager.cpp)
+enable_testing()
+add_executable(feed_tests tests/test_fix_parser.cpp src/fix_parser.cpp)
+add_test(NAME FeedTests COMMAND feed_tests)
