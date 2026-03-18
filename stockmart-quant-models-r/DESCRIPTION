@@ -1,0 +1,7 @@
+Package: stockmartquant
+Title: StockMart Quantitative Models
+Version: 1.0.0
+Description: Options pricing, Greeks, CAPM, factor models.
+License: MIT
+Imports: stats
+Suggests: testthat
