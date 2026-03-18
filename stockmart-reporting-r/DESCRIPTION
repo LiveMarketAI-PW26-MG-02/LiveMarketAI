@@ -1,0 +1,7 @@
+Package: stockmartreporting
+Title: StockMart Reporting Engine
+Version: 1.0.0
+Description: Daily P&L, monthly statements, trade confirmations.
+License: MIT
+Imports: dplyr
+Suggests: testthat, knitr
