@@ -1,0 +1,1 @@
+def time_decay_memory(states): return states

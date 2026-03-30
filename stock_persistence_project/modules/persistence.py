@@ -1,0 +1,1 @@
+def enforce_min_duration(state_sequence, min_duration=3): return state_sequence

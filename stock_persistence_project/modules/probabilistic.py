@@ -1,0 +1,1 @@
+def probabilistic_transition(states): return states

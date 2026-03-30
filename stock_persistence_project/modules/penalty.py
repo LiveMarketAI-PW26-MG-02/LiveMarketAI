@@ -1,0 +1,1 @@
+def transition_penalty(states): return states
