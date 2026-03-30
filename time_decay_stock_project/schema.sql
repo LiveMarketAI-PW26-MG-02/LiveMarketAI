@@ -1,0 +1,7 @@
+
+CREATE TABLE stock_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    price FLOAT,
+    volume FLOAT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

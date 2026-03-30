@@ -1,0 +1,1 @@
+def decay_attention(seq): return seq
