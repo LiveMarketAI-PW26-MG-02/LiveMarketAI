@@ -1,0 +1,1 @@
+def norm(x): return abs(x)

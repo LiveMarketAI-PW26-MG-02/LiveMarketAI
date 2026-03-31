@@ -1,0 +1,1 @@
+print('simulate mysql insert')

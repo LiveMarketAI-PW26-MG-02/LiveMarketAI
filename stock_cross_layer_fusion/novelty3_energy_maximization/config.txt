@@ -1,0 +1,2 @@
+NOVELTY=novelty3_energy_maximization
+LANG=cpp

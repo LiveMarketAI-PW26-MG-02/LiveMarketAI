@@ -1,0 +1,2 @@
+NOVELTY=novelty7_combinatorial_paths
+LANG=cpp

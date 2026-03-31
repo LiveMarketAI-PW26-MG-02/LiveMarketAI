@@ -1,0 +1,2 @@
+NOVELTY=novelty1_functional_equation
+LANG=python

@@ -1,0 +1,2 @@
+NOVELTY=novelty2_scaling_invariance
+LANG=r

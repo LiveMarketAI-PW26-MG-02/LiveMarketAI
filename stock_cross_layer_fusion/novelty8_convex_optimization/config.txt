@@ -1,0 +1,2 @@
+NOVELTY=novelty8_convex_optimization
+LANG=java

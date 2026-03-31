@@ -1,0 +1,1 @@
+compute <- function(C,R){ return(0.5*C+0.5*R) }

@@ -1,0 +1,2 @@
+NOVELTY=novelty4_cauchy_schwarz
+LANG=java
