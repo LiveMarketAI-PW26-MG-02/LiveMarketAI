@@ -1,0 +1,1 @@
+INSERT INTO results(novelty,result) VALUES('test','ok');
