@@ -1,0 +1,4 @@
+
+CREATE DATABASE stockdb;
+USE stockdb;
+CREATE TABLE stock_data(id INT AUTO_INCREMENT PRIMARY KEY, price FLOAT);
