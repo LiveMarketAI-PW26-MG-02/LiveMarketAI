@@ -1,0 +1,1 @@
+print('R stock smoothing module')
