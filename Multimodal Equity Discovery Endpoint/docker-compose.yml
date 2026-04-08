@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aaai_equity_db
+    environment:
+      POSTGRES_USER: aaai_user
+      POSTGRES_PASSWORD: aaai_pass
+      POSTGRES_DB: aaai_equity
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aaai_user -d aaai_equity"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aaai_equity_backend
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql://aaai_user:aaai_pass@postgres:5432/aaai_equity
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: aaai_equity_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: on-failure
+
+volumes:
+  pgdata:
