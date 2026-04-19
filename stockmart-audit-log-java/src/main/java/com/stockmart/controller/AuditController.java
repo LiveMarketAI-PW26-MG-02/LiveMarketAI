@@ -6,6 +6,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.*;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/audit")
@@ -31,12 +32,21 @@ public class AuditController {
     @GetMapping("/users/{userId}/export")
     public ResponseEntity<String> export(@PathVariable String userId) {
         String safeUserId = userId == null ? "" : userId.replaceAll("[^A-Za-z0-9._-]", "_");
+        safeUserId = safeUserId.replaceAll("^[._-]+|[._-]+$", "");
+        if (safeUserId.length() > 64) {
+            safeUserId = safeUserId.substring(0, 64);
+        }
         if (safeUserId.isEmpty()) {
             safeUserId = "unknown";
         }
+        String filename = "audit_" + safeUserId + ".csv";
+        String contentDisposition = ContentDisposition.attachment()
+            .filename(filename, StandardCharsets.UTF_8)
+            .build()
+            .toString();
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_TYPE, "text/csv")
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=audit_" + safeUserId + ".csv")
+            .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
             .body(svc.exportCsv(userId));
     }
 }
