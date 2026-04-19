@@ -7,6 +7,36 @@ from datetime import datetime, timezone, timedelta
 
 SENDER_EMAIL = os.environ['EMAIL_USERNAME']
 
+# ── Author config ──────────────────────────────────────────────────────────────
+# Maps any alternate git name / GitHub username -> canonical display name.
+# Add a new entry here whenever someone commits under a different name.
+AUTHOR_ALIASES = {
+    '1stsimplifycode': 'Adishree Gupta',
+    'caraxxe':         'Akshat',
+}
+
+# Authors to exclude entirely from all sections (bots, mentor, etc.)
+EXCLUDE_AUTHORS = {
+    'dependabot[bot]',
+    'github-actions[bot]',
+    'Mahitha G',
+    'mahithag2019',
+}
+
+# Canonical team member list (used to detect inactive members reliably,
+# independent of whether they ever committed under any name).
+TEAM_MEMBERS = [
+    'Adishree Gupta',
+    'Bhavani',
+    'Bhumikasl',
+    'Akshat',
+]
+
+
+def normalize(name):
+    """Resolve an alias to its canonical display name."""
+    return AUTHOR_ALIASES.get(name, name)
+
 
 # ── Ordinal suffix helper (1st, 2nd, 3rd, 4th ...) ────────────────────────────
 def ordinal(n):
@@ -38,14 +68,16 @@ week_label  = f"{date_from} to {date_to}"
 report_date = fmt_date(now)
 repo_name   = os.environ['REPO_NAME']
 
-# ── Raw commits (--no-merges keeps counts meaningful) ─────────────────────────
-raw     = git(f'git log --no-merges --after="{since_iso}" --format="%an|%s"')
-commits = [line for line in raw.splitlines() if line.strip()]
-
-# ── All-time authors ───────────────────────────────────────────────────────────
-all_authors = sorted(set(
-    a for a in git('git log --no-merges --format="%an"').splitlines() if a.strip()
-))
+# ── Raw commits: normalize names, drop excluded authors ───────────────────────
+raw = git(f'git log --no-merges --after="{since_iso}" --format="%an|%s"')
+commits = []
+for line in raw.splitlines():
+    if not line.strip():
+        continue
+    author, _, msg = line.partition('|')
+    author = normalize(author.strip())
+    if author not in EXCLUDE_AUTHORS:
+        commits.append(f"{author}|{msg}")
 
 DIVIDER = "=" * 52
 SECTION = "-" * 36
@@ -76,19 +108,18 @@ if not commits:
 else:
     # ── Summary ───────────────────────────────────────────────────────────────
     total_commits  = len(commits)
-    active_set     = set(c.split('|', 1)[0] for c in commits if c.strip())
-    active_authors = sorted(active_set)
-    active_count   = len(active_authors)
+    active_set     = set(c.split('|', 1)[0] for c in commits)
+    active_count   = len(active_set)
 
     # ── Ranking ───────────────────────────────────────────────────────────────
-    counts        = Counter(c.split('|', 1)[0] for c in commits if c.strip())
+    counts        = Counter(c.split('|', 1)[0] for c in commits)
     ranking_lines = "\n".join(
         f"  {author} -> {n} commit(s)"
         for author, n in counts.most_common()
     )
 
-    # ── Inactive members ──────────────────────────────────────────────────────
-    inactive_authors = [a for a in all_authors if a not in active_set]
+    # ── Inactive members (checked against fixed TEAM_MEMBERS list) ────────────
+    inactive_authors = [m for m in TEAM_MEMBERS if m not in active_set]
     inactive_count   = len(inactive_authors)
 
     if inactive_authors:
