@@ -156,7 +156,7 @@ else:
         f"  Active contributors         : {active_count}\n"
         f"  Inactive contributors       : {inactive_count}\n\n"
         f"{SECTION}\n"
-        "[B] CONTRIBUTION RANKING\n"
+        "[B] CONTRIBUTION ANALYSIS\n"
         f"{SECTION}\n"
         f"{ranking_lines}\n\n"
         f"{SECTION}\n"
