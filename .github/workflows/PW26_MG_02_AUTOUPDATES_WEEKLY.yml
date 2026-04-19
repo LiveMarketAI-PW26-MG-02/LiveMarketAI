@@ -3,6 +3,7 @@ name: PW26_MG_02_AUTOUPDATES_WEEKLY
 on:
   schedule:
     - cron: '15 14 * * 0'  # Every Sunday at 7:45 PM IST (14:15 UTC)
+  workflow_dispatch:        # Allows manual triggering from the Actions tab
 
 permissions:
   contents: read
