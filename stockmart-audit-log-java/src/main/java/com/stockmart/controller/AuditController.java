@@ -30,9 +30,13 @@ public class AuditController {
 
     @GetMapping("/users/{userId}/export")
     public ResponseEntity<String> export(@PathVariable String userId) {
+        String safeUserId = userId == null ? "" : userId.replaceAll("[^A-Za-z0-9._-]", "_");
+        if (safeUserId.isEmpty()) {
+            safeUserId = "unknown";
+        }
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_TYPE, "text/csv")
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=audit_" + userId + ".csv")
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=audit_" + safeUserId + ".csv")
             .body(svc.exportCsv(userId));
     }
 }
