@@ -163,7 +163,7 @@ else:
 username   = os.environ['EMAIL_USERNAME']
 password   = os.environ['EMAIL_PASSWORD']
 recipients = [
-    'mahitha.g@pes.edu',
+    'mahithag@pes.edu',
     'mahitharesearch@gmail.com',
     'mailtoadishreegupta@gmail.com',
 ]
