@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '15 14 * * 0'  # Every Sunday at 7:45 PM IST (14:15 UTC)
 
+permissions:
+  contents: read
+
 jobs:
   weekly-report:
     runs-on: ubuntu-latest
