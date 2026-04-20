@@ -1,0 +1,80 @@
+version: "3.9"
+
+# PhantomTick Poisoning Defense — Docker Compose
+# No JSON is used in any service configuration or runtime.
+
+services:
+
+  aggregator:
+    build:
+      context: ./federated-aggregator
+      dockerfile: Dockerfile
+    container_name: ftcm_aggregator
+    ports:
+      - "50051:50051"
+    networks:
+      - ftcm_net
+    restart: unless-stopped
+
+  python-node:
+    build:
+      context: ./python-node
+      dockerfile: Dockerfile
+    container_name: ftcm_python
+    environment:
+      - GRPC_HOST=aggregator:50051
+      - ZMQ_ENDPOINT=tcp://python-node:5570
+    depends_on:
+      - aggregator
+    networks:
+      - ftcm_net
+    ports:
+      - "5570:5570"
+      - "8815:8815"
+    restart: unless-stopped
+
+  r-node:
+    build:
+      context: ./r-node
+      dockerfile: Dockerfile
+    container_name: ftcm_r
+    environment:
+      - ZMQ_SUB_ENDPOINT=tcp://python-node:5570
+    depends_on:
+      - python-node
+    networks:
+      - ftcm_net
+    restart: unless-stopped
+
+  cpp-node:
+    build:
+      context: ./cpp-node
+      dockerfile: Dockerfile
+    container_name: ftcm_cpp
+    command: ["ftcm_node", "aggregator:50051"]
+    environment:
+      - ZMQ_ENDPOINT=tcp://python-node:5570
+    depends_on:
+      - aggregator
+      - python-node
+    networks:
+      - ftcm_net
+    restart: unless-stopped
+
+  java-node:
+    build:
+      context: ./java-node
+      dockerfile: Dockerfile
+    container_name: ftcm_java
+    command: ["java", "-jar",
+              "target/ftcm-java-node-1.0.0-SNAPSHOT.jar",
+              "java-monitor-01", "tcp://python-node:5570", "20"]
+    depends_on:
+      - python-node
+    networks:
+      - ftcm_net
+    restart: unless-stopped
+
+networks:
+  ftcm_net:
+    driver: bridge

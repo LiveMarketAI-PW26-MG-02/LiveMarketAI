@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package fcmdr;
+
+// ── Federated weight update message ──────────────────────────────────────────
+message WeightUpdate {
+  string  node_id       = 1;
+  string  round_id      = 2;
+  repeated float weights = 3;
+  repeated float biases  = 4;
+  double  loss          = 5;
+  int64   sample_count  = 6;
+  bytes   arrow_payload = 7;   // Apache Arrow IPC serialised batch
+}
+
+// ── Anomaly event ─────────────────────────────────────────────────────────────
+message AnomalyEvent {
+  string  node_id        = 1;
+  string  event_type     = 2;
+  double  score          = 3;
+  double  threshold      = 4;
+  int64   timestamp_ns   = 5;
+  repeated double features = 6;
+  bytes   raw_payload    = 7;
+}
+
+// ── Market data tick (binary only) ────────────────────────────────────────────
+message MarketTick {
+  string symbol         = 1;
+  double bid            = 2;
+  double ask            = 3;
+  double last           = 4;
+  double volume         = 5;
+  int64  exchange_ts_ns = 6;
+  int64  recv_ts_ns     = 7;
+  bytes  exchange_id    = 8;
+}
+
+// ── Federated aggregation request/response ────────────────────────────────────
+message AggregationRequest {
+  string  round_id            = 1;
+  repeated WeightUpdate updates = 2;
+}
+
+message AggregationResponse {
+  string  round_id              = 1;
+  repeated float global_weights  = 2;
+  repeated float global_biases   = 3;
+  double  global_loss           = 4;
+  int32   participants          = 5;
+}
+
+// ── Consensus vector ──────────────────────────────────────────────────────────
+message ConsensusVector {
+  string  round_id           = 1;
+  repeated double mean_vector = 2;
+  repeated double std_vector  = 3;
+  double  entropy            = 4;
+}
+
+// ── Health / liveness ─────────────────────────────────────────────────────────
+message HealthRequest  { string node_id = 1; }
+message HealthResponse { bool   healthy = 1; string message = 2; }
+
+// ── Services ──────────────────────────────────────────────────────────────────
+service FederatedAggregator {
+  rpc SubmitWeights      (WeightUpdate)       returns (AggregationResponse);
+  rpc StreamWeights      (stream WeightUpdate) returns (stream AggregationResponse);
+  rpc GetConsensusVector (HealthRequest)       returns (ConsensusVector);
+  rpc Ping               (HealthRequest)       returns (HealthResponse);
+}
+
+service AnomalyBus {
+  rpc PublishAnomaly (AnomalyEvent)         returns (HealthResponse);
+  rpc StreamAnomalies(HealthRequest)        returns (stream AnomalyEvent);
+}

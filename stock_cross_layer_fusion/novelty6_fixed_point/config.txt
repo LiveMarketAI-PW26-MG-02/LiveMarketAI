@@ -1,0 +1,2 @@
+NOVELTY=novelty6_fixed_point
+LANG=r

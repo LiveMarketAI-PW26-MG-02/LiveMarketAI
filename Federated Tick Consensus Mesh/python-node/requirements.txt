@@ -1,0 +1,12 @@
+grpcio>=1.62.0
+grpcio-tools>=1.62.0
+pyarrow>=15.0.0
+pyzmq>=25.1.2
+msgpack>=1.0.7
+onnxruntime>=1.17.1
+scikit-learn>=1.4.0
+numpy>=1.26.0
+protobuf>=4.25.0
+opentelemetry-sdk>=1.23.0
+opentelemetry-exporter-otlp-proto-grpc>=1.23.0
+torch>=2.2.0

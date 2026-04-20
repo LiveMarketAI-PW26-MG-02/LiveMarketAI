@@ -1,0 +1,46 @@
+name: Proof HTML
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+        
+      - name: Set up Node.js (if needed)
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8  # v4.0.2
+        with:
+          node-version: '18'   # or any version you need
+          
+      - name: Install Dependencies (if any)
+        run: |
+          # Install only if package.json exists. Support repo root or subfolders.
+          if [ -f ./package.json ]; then
+            echo "Found package.json in repo root"
+            npm install
+          elif [ -f ./polygot_architecture/package.json ]; then
+            echo "Found package.json in ./polygot_architecture"
+            cd polygot_architecture
+            npm install
+          elif [ -f ./frontend/package.json ]; then
+            echo "Found package.json in ./frontend"
+            cd frontend
+            npm install
+          elif [ -f ./client/package.json ]; then
+            echo "Found package.json in ./client"
+            cd client
+            npm install
+          else
+            echo "No package.json found — skipping npm install"
+          fi
+          
+      - name: Build/Run HTML
+        run: |
+          # Example: just check HTML files or run server
+          echo "Running HTML checks..."
+          ls -R ./   # lists all files for demonstration
+          # You can replace this with your own HTML validation commands

@@ -1,0 +1,1 @@
+def confidence_override(states, confidence): return states

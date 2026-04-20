@@ -1,0 +1,1 @@
+class Model{public static void main(String[] a){System.out.println("Stock model");}}

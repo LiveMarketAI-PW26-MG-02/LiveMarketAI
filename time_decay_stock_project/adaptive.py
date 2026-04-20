@@ -1,0 +1,1 @@
+def adaptive_rate(volatility): return volatility * 0.5

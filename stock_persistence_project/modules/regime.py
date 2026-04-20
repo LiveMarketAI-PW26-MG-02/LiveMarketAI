@@ -1,0 +1,1 @@
+def regime_check(state): return True

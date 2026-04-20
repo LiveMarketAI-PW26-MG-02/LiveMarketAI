@@ -1,0 +1,20 @@
+Package: fspmrnode
+Title: StreamHijack Specter Defense — R Statistical Node
+Version: 0.1.0
+Authors@R: person("Quant", "Research", role = c("aut", "cre"),
+                  email = "quant@research.local")
+Description: Federated statistical anomaly detection node for StreamHijack Specter Defense.
+Depends: R (>= 4.3.0)
+Imports:
+    arrow (>= 14.0.0),
+    RcppMsgPack,
+    zmq,
+    torch,
+    fitdistrplus,
+    mvtnorm,
+    robust,
+    MASS,
+    data.table,
+    bit64
+License: Proprietary
+Encoding: UTF-8

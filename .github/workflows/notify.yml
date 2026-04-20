@@ -1,0 +1,50 @@
+name: Notify Push
+on: push
+permissions:
+  contents: read
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email notification
+        env:
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        run: |
+          python3 << 'EOF'
+          import smtplib
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
+          import os
+          
+          sender = os.environ.get('MAIL_USERNAME')
+          password = os.environ.get('MAIL_PASSWORD')
+          recipients = ["mailtoadishreegupta@gmail.com", "mahithag@pes.edu"]
+          
+          subject = "Push to ${{ github.repository }} on branch ${{ github.ref_name }}"
+          
+          body = """
+Repository: ${{ github.repository }}
+Branch: ${{ github.ref_name }}
+Pusher: ${{ github.actor }}
+Commit Message:
+${{ github.event.head_commit.message }}
+
+View commit: ${{ github.event.head_commit.url }}
+          """
+          
+          msg = MIMEMultipart()
+          msg['From'] = sender
+          msg['To'] = ', '.join(recipients)
+          msg['Subject'] = subject
+          msg.attach(MIMEText(body, 'plain'))
+          
+          try:
+              with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+                  server.login(sender, password)
+                  server.send_message(msg)
+              print("✅ Email sent successfully!")
+          except Exception as e:
+              print(f"❌ Error sending email: {e}")
+              exit(1)
+          EOF

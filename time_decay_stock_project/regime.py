@@ -1,0 +1,1 @@
+def regime_decay(regime): return {'bull':0.3,'bear':0.7,'side':0.5}.get(regime,0.5)

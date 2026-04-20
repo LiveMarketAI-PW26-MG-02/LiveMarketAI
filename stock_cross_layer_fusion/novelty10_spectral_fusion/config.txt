@@ -1,0 +1,2 @@
+NOVELTY=novelty10_spectral_fusion
+LANG=r

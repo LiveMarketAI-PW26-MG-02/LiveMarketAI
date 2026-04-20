@@ -1,0 +1,1 @@
+print('Python stock smoothing module')

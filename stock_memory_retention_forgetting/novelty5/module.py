@@ -1,0 +1,1 @@
+def compute(data): return sum(data)/len(data)

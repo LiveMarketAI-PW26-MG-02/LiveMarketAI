@@ -1,0 +1,2 @@
+NOVELTY=novelty9_majorization
+LANG=python

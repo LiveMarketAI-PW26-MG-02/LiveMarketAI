@@ -1,0 +1,2 @@
+NOVELTY=novelty5_recursive_stability
+LANG=python

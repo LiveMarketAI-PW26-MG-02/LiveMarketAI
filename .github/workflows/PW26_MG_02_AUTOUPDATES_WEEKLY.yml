@@ -1,0 +1,26 @@
+name: PW26_MG_02_AUTOUPDATES_WEEKLY
+
+on:
+  schedule:
+    - cron: '15 14 * * 0'  # Every Sunday at 7:45 PM IST (14:15 UTC)
+  workflow_dispatch:        # Allows manual triggering from the Actions tab
+
+permissions:
+  contents: read
+
+jobs:
+  weekly-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Generate report and send email
+        env:
+          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          REPO_NAME: ${{ github.repository }}
+        run: python3 .github/scripts/weekly_report.py

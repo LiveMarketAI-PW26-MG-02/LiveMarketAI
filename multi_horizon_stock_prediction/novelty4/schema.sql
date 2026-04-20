@@ -1,0 +1,1 @@
+CREATE TABLE stock_data(id INT, price FLOAT);

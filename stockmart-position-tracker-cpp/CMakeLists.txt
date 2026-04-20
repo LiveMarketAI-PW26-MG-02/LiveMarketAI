@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.16)
+project(stockmart_position_tracker VERSION 1.0.0 LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+include_directories(include)
+add_executable(position_tracker src/main.cpp src/position_ledger.cpp src/pnl_calculator.cpp)
+enable_testing()
+add_executable(position_tests tests/test_positions.cpp src/position_ledger.cpp src/pnl_calculator.cpp)
+add_test(NAME PositionTests COMMAND position_tests)

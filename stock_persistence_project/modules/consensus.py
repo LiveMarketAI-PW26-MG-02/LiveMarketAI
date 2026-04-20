@@ -1,0 +1,1 @@
+def multi_window_consensus(states): return states

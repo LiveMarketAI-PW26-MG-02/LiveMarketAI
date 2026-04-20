@@ -1,0 +1,1 @@
+def temporal_smoothing(states): return states

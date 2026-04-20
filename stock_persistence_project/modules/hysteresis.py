@@ -1,0 +1,1 @@
+def hysteresis_classification(values): return values

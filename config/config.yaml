@@ -1,0 +1,57 @@
+# Inflation Indicators Engine — Configuration
+
+engine:
+  cache_enabled: true
+  cache_ttl_seconds: 3600
+  default_frequency: monthly
+  base_year: 2015
+
+data:
+  fred_api_key: ""          # Set via FRED_API_KEY env variable
+  default_start_date: "2000-01-01"
+  cache_dir: ".cache/data"
+
+indicators:
+  cpi:
+    series_id: CPIAUCSL
+    base_year: 1982
+  core_cpi:
+    series_id: CPILFESL
+  ppi:
+    series_id: PPIACO
+    stage: finished
+  pce:
+    series_id: PCEPI
+  breakeven:
+    maturity: 10
+    series_id: T10YIE
+  commodity:
+    weights: {energy: 0.40, food: 0.35, metals: 0.25}
+
+models:
+  arima:
+    auto_order: true
+    max_p: 3
+    max_q: 3
+  var:
+    max_lags: 4
+    variables: [cpi, ppi, m2_growth, unemployment]
+  lstm:
+    hidden_size: 64
+    num_layers: 2
+    forecast_horizon: 12
+    epochs: 50
+
+forecasting:
+  default_horizon_months: 12
+  combination_method: weighted
+  confidence_level: 0.90
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+
+logging:
+  level: INFO
+  format: "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
