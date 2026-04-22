@@ -1,7 +1,13 @@
 const { Router } = require('express');
+const rateLimit = require('express-rate-limit');
 const router = Router();
 const ctrl = require('../controllers/orderController');
 const { validate, createOrderSchema } = require('../middleware/validate');
+
+const verifyStockLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 60, // limit each IP to 60 verify requests per window
+});
 
 // ── Health ─────────────────────────────────────────────────────────────────
 router.get('/health', (_, res) => res.json({
@@ -49,7 +55,7 @@ router.get('/orders/investor/:investor_id/portfolio', ctrl.getPortfolio);
 
 // ── Step 10: Verify stock before order ────────────────────────────────────
 // GET /api/v1/orders/verify/:stock_id
-router.get('/orders/verify/:stock_id', ctrl.verifyStock);
+router.get('/orders/verify/:stock_id', verifyStockLimiter, ctrl.verifyStock);
 
 // ── Get single order ───────────────────────────────────────────────────────
 // GET /api/v1/orders/:order_id
