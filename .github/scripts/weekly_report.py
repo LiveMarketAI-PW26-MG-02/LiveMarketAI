@@ -13,6 +13,7 @@ SENDER_EMAIL = os.environ['EMAIL_USERNAME']
 AUTHOR_ALIASES = {
     '1stsimplifycode': 'Adishree Gupta',
     'caraxxe':         'Akshat',
+    'Bhavani3010':     'Bhavani',
 }
 
 # Authors to exclude entirely from all sections (bots, mentor, etc.)
