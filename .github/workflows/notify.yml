@@ -19,7 +19,7 @@ jobs:
           
           sender = os.environ.get('MAIL_USERNAME')
           password = os.environ.get('MAIL_PASSWORD')
-          recipients = ["mailtoadishreegupta@gmail.com", "mahithag@pes.edu"]
+          recipients = ["mailtoadishreegupta@gmail.com", "mahithag@pes.edu","mahitharesearch@gmail.com"]
           
           subject = "Push to ${{ github.repository }} on branch ${{ github.ref_name }}"
           
