@@ -1,0 +1,154 @@
+# RAGNN — 06 Inference
+
+## Module: Regime-Aware Graph Neural Network
+
+### Overview
+Real-time inference pipeline with streaming graph updates
+
+This subfolder implements **RAGNN** capabilities for:
+> *Multi-regime ensemble GNN with soft regime assignment*
+
+---
+
+## Novelty Bullets (Module Level)
+
+1. Regime-conditioned message passing with dynamic edge weights
+2. Adaptive regime detection via Hidden Markov Models on price series
+3. Cross-regime correlation learning using regime-specific adjacency matrices
+4. Temporal regime transition modeling with Markov chain embeddings
+5. Regime-aware attention mechanism for asset relationship weighting
+6. Multi-regime ensemble GNN with soft regime assignment
+7. Regime change point detection integrated into graph topology updates
+8. Asymmetric information flow modeling across regime boundaries
+9. Regime-robust feature normalization preventing distribution shift
+10. Explainable regime attribution for manipulation alert generation
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `main.py` | Entry point — full pipeline execution |
+| `model.py` / `engine.py` | Core logic, classes, and algorithms |
+| `neo4j_schema.cypher` | Neo4j schema: constraints, indexes, node/rel creation |
+| `neo4j_queries.cypher` | Operational Cypher queries for analytics |
+| `config.json` | Configuration parameters |
+| `utils.py` | Shared utility functions |
+| `README.md` | This file |
+
+---
+
+## How to Run
+
+```bash
+# From project root (with venv activated):
+cd RAGNN/06_inference
+python main.py
+```
+
+Or via the module demo runner:
+```bash
+cd RAGNN/10_demo_runner
+python main.py
+```
+
+---
+
+## Neo4j Graph Structure
+
+### Nodes Used
+- **Asset** — Financial instrument with risk score
+- **Influencer** — Social/news source affecting sentiment
+- **MarketRegime** — Detected market condition window
+- **OrderBookLevel** — Limit order book price level
+- **Signal** — Detected anomaly signal
+- **RiskAlert** — Actionable manipulation alert
+- **Explanation** — XAI explanation for model decision
+
+### Relationships Used
+- `INFLUENCES` — Influencer → Asset sentiment impact
+- `CORRELATES_WITH` — Asset ↔ Asset price co-movement
+- `HAS_REGIME` — Asset → MarketRegime membership
+- `PROPAGATES_RISK` — Risk contagion between assets/signals
+- `TRIGGERS_ALERT` — Signal → RiskAlert activation
+- `CAUSES_SIGNAL` — Asset/Influencer/Regime → Signal
+
+---
+
+## Sample Output
+
+```
+[1/5] Generating synthetic market data...
+      → 98,800 rows × 18 columns
+[2/5] Building graph...
+      Correlation graph: 20 nodes, 47 edges
+[3/5] GNN inference...
+      Flagged: 4 / 20 assets (20.0%)
+[4/5] Risk scoring...
+      Mean risk: 0.3842 | Critical: 1 | High: 3
+[5/5] Generating alerts...
+      Generated 4 alerts → outputs/ragnn_demo/alerts.json
+```
+
+### risk_scores.csv (sample)
+```
+asset_id,risk_score,severity,label,module
+ASSET_000,0.8731,critical,1,RAGNN
+ASSET_001,0.7245,high,1,RAGNN
+ASSET_002,0.2134,low,0,RAGNN
+```
+
+### alerts.json (sample)
+```json
+{
+  "module": "RAGNN",
+  "total": 4,
+  "alerts": [
+    {
+      "alert_id": "ALERT_RAGNN_00001",
+      "asset_id": "ASSET_000",
+      "risk_score": 0.8731,
+      "severity": "critical",
+      "manipulation_type": "Pump-and-Dump"
+    }
+  ]
+}
+```
+
+---
+
+## Architecture
+
+```
+Raw Data (OHLCV + Sentiment + OrderBook)
+         ↓
+   Feature Engineering
+         ↓
+   Graph Construction (NetworkX / Neo4j)
+         ↓
+   RAGNN GNN Forward Pass
+         ↓
+   Risk Score Computation
+         ↓
+   Alert Generation & XAI
+         ↓
+   Output: risk_scores.csv + alerts.json + explanation.txt
+```
+
+---
+
+## Research Context
+
+**Regime-Aware Graph Neural Network** addresses the key challenge of explainable, graph-based
+financial market manipulation detection. This subfolder (06_inference)
+contributes to the research by implementing:
+
+*Multi-regime ensemble GNN with soft regime assignment*
+
+The implementation maps directly to the novelty bullet above, providing
+a concrete computational realization of the theoretical contribution.
+
+---
+
+*Part of the 17th_may_2026 Research Project | RAGNN Module*
