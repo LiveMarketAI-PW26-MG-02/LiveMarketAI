@@ -1,0 +1,22 @@
+from __future__ import annotations
+
+from datetime import datetime
+
+from sqlalchemy import (Boolean, Column, DateTime, Float, Integer,
+                        JSON, String, Text)
+
+from ..db.base import Base
+
+
+class Option(Base):
+    __tablename__ = "options"
+
+    id = Column(Integer, primary_key=True, index=True)
+    underlying = Column(String(255), nullable=True)
+    strike = Column(Float, nullable=True)
+    expiry = Column(DateTime, nullable=True)
+    kind = Column(String(255), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+    def __repr__(self) -> str:  # pragma: no cover
+        return f"<Option id={self.id}>"
